@@ -1,11 +1,10 @@
 """
 test_tdccmcdataset.py
 """
-from .tdccmcdataset import TDCCMCDataset
-
 import torch
 from torch.utils.data import DataLoader
 
+from .tdccmcdataset import TDCCMCDataset
 
 dataset = TDCCMCDataset(
     filenames=["./videos/2AYaxTiWKoY.mp4"], trims=[(0, 200)], crops=[(0, 0, 140, 140)]

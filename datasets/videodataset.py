@@ -30,10 +30,11 @@ class VideoDataset(Dataset):
         super().__init__()
 
         # Get video frames with scikit-video
-        reader = FFmpegReader(filename,
-                              inputdict={'-r': str(frame_rate)},
-                              outputdict={'-r': str(frame_rate)}
-                              )
+        reader = FFmpegReader(
+            filename,
+            inputdict={"-r": str(frame_rate)},
+            outputdict={"-r": str(frame_rate)},
+        )
         self.frames = []
         for frame_idx, frame in enumerate(reader.nextFrame()):
             # Trim video (time)
@@ -44,7 +45,7 @@ class VideoDataset(Dataset):
             frame_idx += 1
 
             # Crop frames (space)
-            frame = frame[crop[1]:crop[3], crop[0]:crop[2], :]
+            frame = frame[crop[1] : crop[3], crop[0] : crop[2], :]
             self.frames.append(cv2.resize(frame, (140, 140)))
 
         # Change to NumPy array with PyTorch dimension format
@@ -70,19 +71,19 @@ class VideoDataset(Dataset):
         framestack : torch.FloatTensor
         """
         # Stack Frames
-        framestack = self.frames[index:index+4]
+        framestack = self.frames[index : index + 4]
 
         # Center-crop Frames from 140x140 to 128x128
         # TODO Is center-cropping correct?
         y = 6
         x = 6
-        framestack = framestack[:, :, y:y+128, x:x+128]
+        framestack = framestack[:, :, y : y + 128, x : x + 128]
 
         # Switch 4 x 3 x 128 x 128 to 1 x 12 x 128 x 128
         framestack = torch.FloatTensor(framestack).view(-1, 128, 128)
 
         # Scale image values from 0~255 to 0~1
         # TODO Do in __init__
-        framestack /= 255.
+        framestack /= 255.0
 
         return framestack

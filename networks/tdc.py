@@ -19,7 +19,7 @@ class ResidualBlock(nn.Module):
             nn.BatchNorm2d(out_channels),
             nn.ReLU(inplace=True),
             nn.Conv2d(out_channels, out_channels, 3, padding=1),
-            nn.BatchNorm2d(out_channels)
+            nn.BatchNorm2d(out_channels),
         )
         self.final_relu = nn.ReLU(inplace=True)
 
@@ -72,8 +72,7 @@ class TDC(nn.Module):
             ResidualBlock(64, 64),
         )
         self.fc_layers = nn.Sequential(
-            nn.Linear(16384, 1024),
-            nn.Linear(1024, out_channels)
+            nn.Linear(16384, 1024), nn.Linear(1024, out_channels)
         )
 
     def forward(self, x):

@@ -3,8 +3,9 @@ python:
   - "3.6"
 install:
   - pip install -r requirements.txt --quiet
-  - pip install flake8 isort
+  - pip install black flake8 isort
 script:
+  - black --check .
   - flake8
   - isort **/*.py -c -vb
 cache: pip

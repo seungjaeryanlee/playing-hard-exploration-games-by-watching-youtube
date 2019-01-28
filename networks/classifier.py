@@ -28,9 +28,7 @@ class Classifier(nn.Module):
         # From Section 5: Implementation Details
         super().__init__()
         self.layers = nn.Sequential(
-            nn.Linear(in_channels, 1024),
-            nn.ReLU(),
-            nn.Linear(1024, out_channels)
+            nn.Linear(in_channels, 1024), nn.ReLU(), nn.Linear(1024, out_channels)
         )
 
     def forward(self, x):

@@ -8,9 +8,7 @@ from torch.utils.data import DataLoader
 
 
 dataset = VideoDataset(
-    filename='./videos/2AYaxTiWKoY.mp4',
-    trim=(0, 200),
-    crop=(0, 0, 140, 140),
+    filename="./videos/2AYaxTiWKoY.mp4", trim=(0, 200), crop=(0, 0, 140, 140)
 )
 loader = DataLoader(dataset, batch_size=32, num_workers=4)
 batch = next(iter(loader))

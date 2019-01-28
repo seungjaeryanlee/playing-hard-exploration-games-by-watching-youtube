@@ -20,15 +20,20 @@ from networks import Classifier, TDC, CMC
 
 
 def get_tsne_loaders(filenames, trims, crops):
-    datasets = [VideoAudioDataset(filename, trim, crop, frame_rate=15)
-                for filename, trim, crop in zip(filenames, trims, crops)]
-    loaders = [DataLoader(dataset, batch_size=32, shuffle=False, num_workers=1) for dataset in datasets]
-    
+    datasets = [
+        VideoAudioDataset(filename, trim, crop, frame_rate=15)
+        for filename, trim, crop in zip(filenames, trims, crops)
+    ]
+    loaders = [
+        DataLoader(dataset, batch_size=32, shuffle=False, num_workers=1)
+        for dataset in datasets
+    ]
+
     return loaders
 
 
 def plot_tsne(tsne_loaders, tdc, cmc, device, save=False, log_to_wandb=True):
-    
+
     for loader in tsne_loaders:
         embed_batches = []
         for i, batch in enumerate(loader):
@@ -49,12 +54,12 @@ def plot_tsne(tsne_loaders, tdc, cmc, device, save=False, log_to_wandb=True):
 
     # Save and show completed plot
     if save:
-        plt.savefig('tsne.png')
+        plt.savefig("tsne.png")
     if log_to_wandb:
-        wandb.log({'t-SNE': plt})
+        wandb.log({"t-SNE": plt})
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
     # Load Models
@@ -66,8 +71,18 @@ if __name__ == '__main__':
     tdc.eval()
     cmc.eval()
 
-    filenames = ['./data/6zXXZvVvTFs', './data/SuZVyOlgVek', './data/2AYaxTiWKoY', './data/pF6xCZA72o0']
+    filenames = [
+        "./data/6zXXZvVvTFs",
+        "./data/SuZVyOlgVek",
+        "./data/2AYaxTiWKoY",
+        "./data/pF6xCZA72o0",
+    ]
     trims = [(960, 1403), (15, 437), (550, 1515), (1465, 2201)]
-    crops = [(35, 50, 445, 300), (79, 18, 560, 360), (0, 13, 640, 335), (20, 3, 620, 360)]
+    crops = [
+        (35, 50, 445, 300),
+        (79, 18, 560, 360),
+        (0, 13, 640, 335),
+        (20, 3, 620, 360),
+    ]
     tsne_loaders = get_tsne_loaders(filenames, trims, crops)
     plot_tsne(tsne_loaders, tdc, cmc, device)

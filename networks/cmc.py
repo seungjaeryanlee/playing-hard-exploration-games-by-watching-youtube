@@ -46,9 +46,7 @@ class CMC(nn.Module):
             nn.MaxPool1d(2),
             nn.ReLU(),
         )
-        self.fc_layers = nn.Sequential(
-            nn.Linear(512, out_channels),
-        )
+        self.fc_layers = nn.Sequential(nn.Linear(512, out_channels))
 
     def forward(self, x):
         out = self.conv_layers(x)

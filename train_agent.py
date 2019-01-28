@@ -15,5 +15,6 @@ def train_agent():
     # Create environment
     env = make_env(tdc, cmc, checkpoints)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()

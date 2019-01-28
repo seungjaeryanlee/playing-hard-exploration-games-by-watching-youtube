@@ -4,7 +4,7 @@ from .youtube_wrappers import wrap_youtube
 
 
 def make_env(embedding_net, ckpts):
-    env = make_atari('MontezumaRevengeNoFrameskip-v4')
+    env = make_atari("MontezumaRevengeNoFrameskip-v4")
     env = wrap_deepmind(env)
     env = wrap_pytorch(env)
     env = wrap_youtube(env, embedding_net, ckpts)

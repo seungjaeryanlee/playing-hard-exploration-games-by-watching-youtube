@@ -4,8 +4,9 @@ save_load.py
 import torch
 
 
-def save_models(tdc, cmc, tdc_classifier, cmc_classifier, optimizer,
-                path='saves/', prefix='best_'):
+def save_models(
+    tdc, cmc, tdc_classifier, cmc_classifier, optimizer, path="saves/", prefix="best_"
+):
     """
     Save trained models to .pth files.
 
@@ -27,14 +28,14 @@ def save_models(tdc, cmc, tdc_classifier, cmc_classifier, optimizer,
         Prefix to append to each neural network filename.
     """
     prefix = path + prefix
-    torch.save(tdc.state_dict(), '{}tdc.pth'.format(prefix))
-    torch.save(cmc.state_dict(), '{}cmc.pth'.format(prefix))
-    torch.save(tdc_classifier.state_dict(), '{}tdc_cls.pth'.format(prefix))
-    torch.save(cmc_classifier.state_dict(), '{}cmc_cls.pth'.format(prefix))
-    torch.save(optimizer.state_dict(), '{}optim.pth'.format(prefix))
+    torch.save(tdc.state_dict(), "{}tdc.pth".format(prefix))
+    torch.save(cmc.state_dict(), "{}cmc.pth".format(prefix))
+    torch.save(tdc_classifier.state_dict(), "{}tdc_cls.pth".format(prefix))
+    torch.save(cmc_classifier.state_dict(), "{}cmc_cls.pth".format(prefix))
+    torch.save(optimizer.state_dict(), "{}optim.pth".format(prefix))
 
 
-def load_models(tdc, cmc, path='saves/', prefix='best_'):
+def load_models(tdc, cmc, path="saves/", prefix="best_"):
     """
     Load trained models from .pth files.
 
@@ -50,5 +51,5 @@ def load_models(tdc, cmc, path='saves/', prefix='best_'):
         Prefix to append to each neural network filename.
     """
     prefix = path + prefix
-    tdc.load_state_dict(torch.load('{}tdc.pth'.format(prefix)))
-    cmc.load_state_dict(torch.load('{}cmc.pth'.format(prefix)))
+    tdc.load_state_dict(torch.load("{}tdc.pth".format(prefix)))
+    cmc.load_state_dict(torch.load("{}cmc.pth".format(prefix)))

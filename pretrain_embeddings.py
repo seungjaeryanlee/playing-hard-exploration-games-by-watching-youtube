@@ -18,8 +18,20 @@ from networks import Classifier, TDC, CMC
 from tsne import get_tsne_loaders, plot_tsne
 
 
-def pretrain_embeddings(loader, tdc, cmc, tdc_classifier, cmc_classifier, optimizer, tsne_loaders, device,
-                        CMC_LAMBDA, NB_STEPS, SAVE_INTERVAL, TSNE_INTERVAL):
+def pretrain_embeddings(
+    loader,
+    tdc,
+    cmc,
+    tdc_classifier,
+    cmc_classifier,
+    optimizer,
+    tsne_loaders,
+    device,
+    CMC_LAMBDA,
+    NB_STEPS,
+    SAVE_INTERVAL,
+    TSNE_INTERVAL,
+):
     """
     Train the embedding networks and classifiers for TDC and CMC.
 
@@ -71,19 +83,33 @@ def pretrain_embeddings(loader, tdc, cmc, tdc_classifier, cmc_classifier, optimi
         epoch_per_sec = 1 / duration
 
         # Log to console and wandb
-        print('[pretrain] {}/{}\tLoss {:.6f}\t{:2.2f} seconds'.format(i, NB_STEPS, loss, duration))
-        wandb.log({
-            'Loss': loss,
-            'Duration': duration,
-            'Epochs per second': epoch_per_sec,
-        })
+        print(
+            "[pretrain] {}/{}\tLoss {:.6f}\t{:2.2f} seconds".format(
+                i, NB_STEPS, loss, duration
+            )
+        )
+        wandb.log(
+            {"Loss": loss, "Duration": duration, "Epochs per second": epoch_per_sec}
+        )
 
         # Save model periodically
         if i > 0 and i % SAVE_INTERVAL == 0:
             save_start_t = time.time()
-            save_models(tdc, cmc, tdc_classifier, cmc_classifier, optimizer, path=wandb.run.dir, prefix='best_')
+            save_models(
+                tdc,
+                cmc,
+                tdc_classifier,
+                cmc_classifier,
+                optimizer,
+                path=wandb.run.dir,
+                prefix="best_",
+            )
             save_end_t = time.time()
-            print('[pretrain] Saved checkpoint (Duration: {}s)'.format(save_end_t - save_start_t))
+            print(
+                "[pretrain] Saved checkpoint (Duration: {}s)".format(
+                    save_end_t - save_start_t
+                )
+            )
 
         # Plot t-SNE periodically
         if i % TSNE_INTERVAL == 0:
@@ -94,54 +120,85 @@ def pretrain_embeddings(loader, tdc, cmc, tdc_classifier, cmc_classifier, optimi
             tdc.train()
             cmc.train()
             tsne_end_t = time.time()
-            print('[pretrain] Updated t-SNE figure (Duration: {}s)'.format(tsne_end_t - tsne_start_t))
+            print(
+                "[pretrain] Updated t-SNE figure (Duration: {}s)".format(
+                    tsne_end_t - tsne_start_t
+                )
+            )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # Parse arguments
     args = get_args()
 
     # Setup wandb
-    wandb.init(project='youtube')
+    wandb.init(project="youtube")
     wandb.config.update(args)
-    print('[pretrain] Wandb setup complete.')
+    print("[pretrain] Wandb setup complete.")
 
-    device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
     dataset = TDCCMCDataset(
-        filenames=['./data/6zXXZvVvTFs', './data/2AYaxTiWKoY', './data/sYbBgkP9aMo'],
+        filenames=["./data/6zXXZvVvTFs", "./data/2AYaxTiWKoY", "./data/sYbBgkP9aMo"],
         trims=[(960, 9960), (550, 9550), (1, 9901)],
         crops=[(35, 50, 445, 300), (0, 13, 640, 335), (5, 22, 475, 341)],
     )
-    loader = DataLoader(dataset, batch_size=args.BATCH_SIZE, num_workers=0, pin_memory=True)
-    print('[pretrain] Dataset and DataLoader ready.')
+    loader = DataLoader(
+        dataset, batch_size=args.BATCH_SIZE, num_workers=0, pin_memory=True
+    )
+    print("[pretrain] Dataset and DataLoader ready.")
 
     tdc = TDC().to(device)
     cmc = CMC().to(device)
     tdc_classifier = Classifier().to(device)
     cmc_classifier = Classifier().to(device)
-    print('[pretrain] Neural networks initialized.')
+    print("[pretrain] Neural networks initialized.")
 
     # Initialize Optimizer
-    optim_params = (list(tdc.parameters()) + list(cmc.parameters())
-                    + list(tdc_classifier.parameters()) + list(cmc_classifier.parameters()))
+    optim_params = (
+        list(tdc.parameters())
+        + list(cmc.parameters())
+        + list(tdc_classifier.parameters())
+        + list(cmc_classifier.parameters())
+    )
     optimizer = optim.Adam(optim_params, lr=args.LR)
-    print('[pretrain] Optimizer initialized.')
+    print("[pretrain] Optimizer initialized.")
 
-    
     # Setup t-SNE datasets
-    tsne_filenames = ['./data/6zXXZvVvTFs', './data/2AYaxTiWKoY', './data/sYbBgkP9aMo', './data/pF6xCZA72o0']
-    tsne_trims     = [(960, 1403), (550, 1515), (1, 331), (1465, 2201)]
-    tsne_crops     = [(35, 50, 445, 300), (0, 13, 640, 335), (5, 22, 475, 341), (20, 3, 620, 360)]
-    tsne_loaders   = get_tsne_loaders(tsne_filenames, tsne_trims, tsne_crops)
-    print('[pretrain] Setup t-SNE datasets')
+    tsne_filenames = [
+        "./data/6zXXZvVvTFs",
+        "./data/2AYaxTiWKoY",
+        "./data/sYbBgkP9aMo",
+        "./data/pF6xCZA72o0",
+    ]
+    tsne_trims = [(960, 1403), (550, 1515), (1, 331), (1465, 2201)]
+    tsne_crops = [
+        (35, 50, 445, 300),
+        (0, 13, 640, 335),
+        (5, 22, 475, 341),
+        (20, 3, 620, 360),
+    ]
+    tsne_loaders = get_tsne_loaders(tsne_filenames, tsne_trims, tsne_crops)
+    print("[pretrain] Setup t-SNE datasets")
 
     # Pretrain Embeddings
-    print('[pretrain] Begin training.')
-    pretrain_embeddings(loader, tdc, cmc, tdc_classifier, cmc_classifier, optimizer, tsne_loaders, device,
-                     args.CMC_LAMBDA, args.NB_STEPS, args.SAVE_INTERVAL, args.TSNE_INTERVAL)
-    print('[pretrain] Finished training.')
+    print("[pretrain] Begin training.")
+    pretrain_embeddings(
+        loader,
+        tdc,
+        cmc,
+        tdc_classifier,
+        cmc_classifier,
+        optimizer,
+        tsne_loaders,
+        device,
+        args.CMC_LAMBDA,
+        args.NB_STEPS,
+        args.SAVE_INTERVAL,
+        args.TSNE_INTERVAL,
+    )
+    print("[pretrain] Finished training.")
 
     # Save Model
     save_models(tdc, cmc, tdc_classifier, cmc_classifier, optimizer)
-    print('[pretrain] Saved embedding successfully!')
+    print("[pretrain] Saved embedding successfully!")

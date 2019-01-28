@@ -3,6 +3,7 @@ import gym
 DELTA_T = 1
 ALPHA = 0.5
 
+
 class YouTubeWrapper(gym.Wrapper):
     def __init__(self, env, embedding_net, ckpts):
         gym.Wrapper.__init__(self, env)

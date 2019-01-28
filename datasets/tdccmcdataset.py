@@ -38,10 +38,11 @@ class TDCCMCDataset(Dataset):
         self.sources = []
         for filename, trim, crop in zip(filenames, trims, crops):
             # Get video frames with scikit-video
-            reader = FFmpegReader(filename + '.mp4',
-                                  inputdict={'-r': str(frame_rate)},
-                                  outputdict={'-r': str(frame_rate)}
-                                  )
+            reader = FFmpegReader(
+                filename + ".mp4",
+                inputdict={"-r": str(frame_rate)},
+                outputdict={"-r": str(frame_rate)},
+            )
             frames = []
             for frame_idx, frame in enumerate(reader.nextFrame()):
                 # Trim video (time)
@@ -51,7 +52,7 @@ class TDCCMCDataset(Dataset):
                     break
 
                 # Crop frames (space)
-                frame = frame[crop[1]:crop[3], crop[0]:crop[2], :]
+                frame = frame[crop[1] : crop[3], crop[0] : crop[2], :]
                 frames.append(cv2.resize(frame, (140, 140)))
 
             # Change to NumPy array with PyTorch dimension format
@@ -60,7 +61,7 @@ class TDCCMCDataset(Dataset):
 
             # STFT audio
             # TODO Magic number sr=2000, n_fft=510
-            y, _ = librosa.load(filename + '.wav', sr=2000)
+            y, _ = librosa.load(filename + ".wav", sr=2000)
             D = librosa.core.stft(y, n_fft=510)
             D = np.abs(D)
 
@@ -117,32 +118,32 @@ class TDCCMCDataset(Dataset):
         cmc_distance = self._sample_distance_from_label(cmc_label)
 
         # 4) Sample framestack_v from video (check limits carefully)
-        framestack_v_idx = np.random.randint(0, len(video)-tdc_distance-4)
-        framestack_v = video[framestack_v_idx:framestack_v_idx+4]
+        framestack_v_idx = np.random.randint(0, len(video) - tdc_distance - 4)
+        framestack_v = video[framestack_v_idx : framestack_v_idx + 4]
 
         # 5) Sample frame_w from video
         framestack_w_idx = framestack_v_idx + tdc_distance
-        framestack_w = video[framestack_w_idx:framestack_w_idx+4]
+        framestack_w = video[framestack_w_idx : framestack_w_idx + 4]
 
         # 6) Sample audio_a from audio
         audio_a_idx = framestack_v_idx + cmc_distance
-        audio_a = audio[:, audio_a_idx:audio_a_idx+137]
+        audio_a = audio[:, audio_a_idx : audio_a_idx + 137]
         audio_a = torch.FloatTensor(audio_a)
 
         # 7) Crop Frames from 140x140 to 128x128
         # TODO Is it correct to use same crop for both v and w?
-        y = np.random.randint(0, 140-128)
-        x = np.random.randint(0, 140-128)
-        framestack_v = framestack_v[:, :, y:y+128, x:x+128]
-        framestack_w = framestack_w[:, :, y:y+128, x:x+128]
+        y = np.random.randint(0, 140 - 128)
+        x = np.random.randint(0, 140 - 128)
+        framestack_v = framestack_v[:, :, y : y + 128, x : x + 128]
+        framestack_w = framestack_w[:, :, y : y + 128, x : x + 128]
 
         # 8) Switch 4 x 3 x 128 x 128 to 1 x 12 x 128 x 128
         framestack_v = torch.FloatTensor(framestack_v).view(-1, 128, 128)
         framestack_w = torch.FloatTensor(framestack_w).view(-1, 128, 128)
 
         # 9) Scale image values from 0~255 to 0~1
-        framestack_v /= 255.
-        framestack_w /= 255.
+        framestack_v /= 255.0
+        framestack_w /= 255.0
 
         # 10) Return (frame_v, frame_w, audio_a, tdc_label, cmc_label)
         return (
@@ -186,17 +187,17 @@ class TDCCMCDataset(Dataset):
         distance: int
             Distance sampled according to the label.
         """
-        if label == 0:    # [0]
+        if label == 0:  # [0]
             distance = 0
         elif label == 1:  # [1]
             distance = 1
         elif label == 2:  # [2]
             distance = 2
         elif label == 3:  # [3 - 4]
-            distance = np.random.choice(np.arange(3, 4+1))
+            distance = np.random.choice(np.arange(3, 4 + 1))
         elif label == 4:  # [5 - 20]
-            distance = np.random.choice(np.arange(5, 20+1))
-        else:             # [21 - 200]
-            distance = np.random.choice(np.arange(21, 200+1))
+            distance = np.random.choice(np.arange(5, 20 + 1))
+        else:  # [21 - 200]
+            distance = np.random.choice(np.arange(21, 200 + 1))
 
         return distance

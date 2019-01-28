@@ -8,9 +8,8 @@ import os
 from collections import deque
 
 import cv2
-import numpy as np
-
 import gym
+import numpy as np
 from gym import spaces
 
 os.environ.setdefault("PATH", "")

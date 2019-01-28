@@ -7,9 +7,9 @@ import time
 import torch
 import torch.nn.functional as F
 import torch.optim as optim
+import wandb
 from torch.utils.data import DataLoader
 
-import wandb
 from commons import get_args, save_models
 from datasets import TDCCMCDataset
 from networks import CMC, TDC, Classifier

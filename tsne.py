@@ -8,10 +8,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 import torch
 import torch.nn.functional as F
+import wandb
 from sklearn.manifold import TSNE
 from torch.utils.data import DataLoader
 
-import wandb
 from commons import load_models
 from datasets import VideoAudioDataset
 from networks import CMC, TDC

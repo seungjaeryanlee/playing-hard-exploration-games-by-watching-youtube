@@ -7,3 +7,4 @@ install:
 script:
   - flake8
   - isort **/*.py -c -vb
+cache: pip

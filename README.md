@@ -1,7 +1,7 @@
 # exploration-with-youtube
 
-[![flake8 Build Status](https://img.shields.io/travis/com/seungjaeryanlee/playing-hard-exploration-games-by-watching-youtube.svg?label=flake8)](https://travis-ci.com/seungjaeryanlee/playing-hard-exploration-games-by-watching-youtube)
 [![black Build Status](https://img.shields.io/travis/com/seungjaeryanlee/playing-hard-exploration-games-by-watching-youtube.svg?label=black)](https://travis-ci.com/seungjaeryanlee/playing-hard-exploration-games-by-watching-youtube)
+[![flake8 Build Status](https://img.shields.io/travis/com/seungjaeryanlee/playing-hard-exploration-games-by-watching-youtube.svg?label=flake8)](https://travis-ci.com/seungjaeryanlee/playing-hard-exploration-games-by-watching-youtube)
 [![isort Build Status](https://img.shields.io/travis/com/seungjaeryanlee/playing-hard-exploration-games-by-watching-youtube.svg?label=isort)](https://travis-ci.com/seungjaeryanlee/playing-hard-exploration-games-by-watching-youtube)
 
 A PyTorch implementation of Playing Hard Exploration Games by Watching YouTube (DeepMind, May 2018)

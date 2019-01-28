@@ -53,7 +53,7 @@ def plot_tsne(tsne_loaders, tdc, cmc, device, save=False, log_to_wandb=True):
     scatter_colors = cm.rainbow(np.linspace(0, 1, len(embeds)))
 
     embed_sizes = [len(embed) for embed in embeds]
-    embed_indices = [0] + np.cumsum(embed_sizes)
+    embed_indices = [0] + np.cumsum(embed_sizes).tolist()
     for i, _ in enumerate(embed_sizes):
         xs_part = xs[embed_indices[i] : embed_indices[i + 1]]
         ys_part = ys[embed_indices[i] : embed_indices[i + 1]]

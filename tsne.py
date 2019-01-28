@@ -4,6 +4,7 @@ tsne.py
 
 TODO Separate TDC, CMC, TDC+CMC
 """
+import matplotlib.cm as cm
 import matplotlib.pyplot as plt
 import numpy as np
 import torch
@@ -50,6 +51,7 @@ def plot_tsne(tsne_loaders, tdc, cmc, device, save=False, log_to_wandb=True):
 
     # Scatterplot with different colors
     xs, ys = zip(*tsne_embeds)
+    scatter_colors = cm.rainbow(np.linspace(0, 1, len(embeds)))
 
     embed_sizes = [0] + [len(embed) for embed in embeds]
     for i, _ in enumerate(embed_sizes):
@@ -57,7 +59,7 @@ def plot_tsne(tsne_loaders, tdc, cmc, device, save=False, log_to_wandb=True):
             break
         xs_part = xs[embed_sizes[i] : embed_sizes[i + 1]]
         ys_part = ys[embed_sizes[i] : embed_sizes[i + 1]]
-        plt.scatter(xs_part, ys_part)
+        plt.scatter(xs_part, ys_part, color=scatter_colors[i])
 
     # Save and show completed plot
     if save:

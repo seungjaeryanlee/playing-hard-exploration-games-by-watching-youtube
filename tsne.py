@@ -4,6 +4,7 @@ tsne.py
 
 TODO Separate TDC, CMC, TDC+CMC
 """
+import matplotlib.cm as cm
 import matplotlib.pyplot as plt
 import numpy as np
 import torch
@@ -31,7 +32,7 @@ def get_tsne_loaders(filenames, trims, crops):
 
 
 def plot_tsne(tsne_loaders, tdc, cmc, device, save=False, log_to_wandb=True):
-
+    embeds = []
     for loader in tsne_loaders:
         embed_batches = []
         for i, batch in enumerate(loader):
@@ -42,13 +43,21 @@ def plot_tsne(tsne_loaders, tdc, cmc, device, save=False, log_to_wandb=True):
             embed_batch = F.normalize(embed_batch).cpu().detach().numpy()
             embed_batches.append(embed_batch)
         embed = np.concatenate(embed_batches, axis=0)
+        embeds.append(embed)
 
-        # Embed video frames with t-SNE
-        tsne_embed = TSNE(n_components=2).fit_transform(embed)
+    # Embed video frames with t-SNE
+    tsne_embeds = TSNE(n_components=2).fit_transform(np.concatenate(embeds, axis=0))
 
-        # Add to plot
-        xs, ys = zip(*tsne_embed)
-        plt.scatter(xs, ys)
+    # Scatterplot with different colors
+    xs, ys = zip(*tsne_embeds)
+    scatter_colors = cm.rainbow(np.linspace(0, 1, len(embeds)))
+
+    embed_sizes = [len(embed) for embed in embeds]
+    embed_indices = [0] + np.cumsum(embed_sizes).tolist()
+    for i, _ in enumerate(embed_sizes):
+        xs_part = xs[embed_indices[i] : embed_indices[i + 1]]
+        ys_part = ys[embed_indices[i] : embed_indices[i + 1]]
+        plt.scatter(xs_part, ys_part, c=[scatter_colors[i]], s=10)
 
     # Save and show completed plot
     if save:
@@ -83,4 +92,4 @@ if __name__ == "__main__":
         (20, 3, 620, 360),
     ]
     tsne_loaders = get_tsne_loaders(filenames, trims, crops)
-    plot_tsne(tsne_loaders, tdc, cmc, device)
+    plot_tsne(tsne_loaders, tdc, cmc, device, True, False)

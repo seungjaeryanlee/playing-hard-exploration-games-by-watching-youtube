@@ -6,16 +6,15 @@ TODO Separate TDC, CMC, TDC+CMC
 """
 import matplotlib.pyplot as plt
 import numpy as np
-from sklearn.manifold import TSNE
-import wandb
-
 import torch
 import torch.nn.functional as F
+import wandb
+from sklearn.manifold import TSNE
 from torch.utils.data import DataLoader
 
 from commons import load_models
 from datasets import VideoAudioDataset
-from networks import TDC, CMC
+from networks import CMC, TDC
 
 
 def get_tsne_loaders(filenames, trims, crops):

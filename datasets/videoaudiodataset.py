@@ -2,11 +2,10 @@
 videoaudiodataset.py
 """
 import cv2
-import numpy as np
-from skvideo.io import FFmpegReader
 import librosa
-
+import numpy as np
 import torch
+from skvideo.io import FFmpegReader
 from torch.utils.data import Dataset
 
 

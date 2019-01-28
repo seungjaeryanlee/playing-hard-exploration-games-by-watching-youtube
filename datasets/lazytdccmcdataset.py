@@ -2,11 +2,11 @@
 tdccmcdataset.py
 """
 import cv2
-import numpy as np
-from skvideo.io import FFmpegReader
-import torch
-from torch.utils.data import Dataset
 import librosa
+import numpy as np
+import torch
+from skvideo.io import FFmpegReader
+from torch.utils.data import Dataset
 
 
 class LazyTDCCMCDataset(Dataset):

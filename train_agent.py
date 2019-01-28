@@ -1,8 +1,8 @@
 import torch
 
 from commons import load_models
+from networks import CMC, TDC
 from wrappers import make_env
-from networks import TDC, CMC
 
 
 def train_agent(device):

@@ -4,12 +4,13 @@ atari_wrappers.py
 From OpenAI Baselines repository:
 https://github.com/openai/baselines/blob/master/baselines/common/atari_wrappers.py
 """
-import cv2
-from gym import spaces
-import gym
-from collections import deque
-import numpy as np
 import os
+from collections import deque
+
+import cv2
+import gym
+import numpy as np
+from gym import spaces
 
 os.environ.setdefault("PATH", "")
 cv2.ocl.setUseOpenCL(False)

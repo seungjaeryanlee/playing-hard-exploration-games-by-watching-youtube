@@ -11,12 +11,11 @@ import wandb
 
 import torch
 import torch.nn.functional as F
-import torch.optim as optim
 from torch.utils.data import DataLoader
 
 from commons import load_models
 from datasets import VideoAudioDataset
-from networks import Classifier, TDC, CMC
+from networks import TDC, CMC
 
 
 def get_tsne_loaders(filenames, trims, crops):

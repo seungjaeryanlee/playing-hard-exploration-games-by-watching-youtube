@@ -1,9 +1,11 @@
-from commons import load_model
+import torch
+
+from commons import load_models
 from wrappers import make_env
 from networks import TDC, CMC
 
 
-def train_agent():
+def train_agent(device):
     # Load embedded network
     tdc = TDC().to(device)
     cmc = CMC().to(device)
@@ -13,8 +15,13 @@ def train_agent():
     checkpoints = []
 
     # Create environment
-    env = make_env(tdc, cmc, checkpoints)
+    env = make_env((tdc, cmc), checkpoints)
+
+    # TODO Temporarily added to disable flake8 error
+    print(env)
 
 
 if __name__ == "__main__":
-    main()
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+
+    train_agent(device)

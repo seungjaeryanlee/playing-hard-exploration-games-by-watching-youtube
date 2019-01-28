@@ -43,15 +43,14 @@ def plot_tsne(tsne_loaders, tdc, cmc, device, save=False, log_to_wandb=True):
             embed_batch = F.normalize(embed_batch).cpu().detach().numpy()
             embed_batches.append(embed_batch)
         embed = np.concatenate(embed_batches, axis=0)
-
-    embeds.append(embed)
+        embeds.append(embed)
 
     # Embed video frames with t-SNE
     tsne_embeds = TSNE(n_components=2).fit_transform(np.concatenate(embeds, axis=0))
 
     # Scatterplot with different colors
     xs, ys = zip(*tsne_embeds)
-    scatter_colors = ["blue", "green", "red", "cyan", "magenta", "yellow"]
+    scatter_colors = cm.rainbow(np.linspace(0, 1, len(embeds)))
 
     embed_sizes = [0] + [len(embed) for embed in embeds]
     for i, _ in enumerate(embed_sizes):
@@ -59,7 +58,7 @@ def plot_tsne(tsne_loaders, tdc, cmc, device, save=False, log_to_wandb=True):
             break
         xs_part = xs[embed_sizes[i] : embed_sizes[i + 1]]
         ys_part = ys[embed_sizes[i] : embed_sizes[i + 1]]
-        plt.scatter(xs_part, ys_part, c=scatter_colors[i])
+        plt.scatter(xs_part, ys_part, c=[scatter_colors[i]])
 
     # Save and show completed plot
     if save:

@@ -9,11 +9,10 @@ import torch.nn.functional as F
 import torch.optim as optim
 from torch.utils.data import DataLoader
 
-import matplotlib.pyplot as plt
 import wandb
 
 from commons import save_models, get_args
-from datasets import TDCCMCDataset, LazyTDCCMCDataset
+from datasets import TDCCMCDataset
 from networks import Classifier, TDC, CMC
 from tsne import get_tsne_loaders, plot_tsne
 

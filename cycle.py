@@ -16,3 +16,7 @@ def cycle_consistency(dataset1, dataset2):
     # Split dataset into frame stacks
     stacks1 = torch.split(dataset1.frames[:N], 4, dim=0)
     stacks2 = torch.split(dataset2.frames[:N], 4, dim=0)
+
+    # TODO Temporarily added to disable flake8 error
+    print(stacks1)
+    print(stacks2)

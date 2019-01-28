@@ -17,10 +17,10 @@ class YouTubeWrapper(gym.Wrapper):
 
         # Compute imitation reward
         imitation_reward = 0
-        for ckpt_i in range(ckpt_first, ckpt_first + DELTA_T + 1):
-            if embedding_net(ob) * ckpts[ckpt_i] > ALPHA:
+        for ckpt_i in range(self.ckpt_first, self.ckpt_first + DELTA_T + 1):
+            if self.embedding_net(ob) * self.ckpts[ckpt_i] > ALPHA:
                 imitation_reward = 0.5
-                ckpt_first = ckpt_i
+                self.ckpt_first = ckpt_i
                 break
 
         return ob, reward + imitation_reward, done, info

@@ -59,7 +59,7 @@ def plot_tsne(tsne_loaders, tdc, cmc, device, save=False, log_to_wandb=True):
             break
         xs_part = xs[embed_sizes[i] : embed_sizes[i + 1]]
         ys_part = ys[embed_sizes[i] : embed_sizes[i + 1]]
-        plt.scatter(xs_part, ys_part, c=scatter_colors[i])
+        plt.scatter(xs_part, ys_part, c=[scatter_colors[i]])
 
     # Save and show completed plot
     if save:

@@ -92,4 +92,4 @@ if __name__ == "__main__":
         (20, 3, 620, 360),
     ]
     tsne_loaders = get_tsne_loaders(filenames, trims, crops)
-    plot_tsne(tsne_loaders, tdc, cmc, device)
+    plot_tsne(tsne_loaders, tdc, cmc, device, True, False)

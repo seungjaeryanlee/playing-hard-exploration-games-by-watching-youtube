@@ -52,12 +52,11 @@ def plot_tsne(tsne_loaders, tdc, cmc, device, save=False, log_to_wandb=True):
     xs, ys = zip(*tsne_embeds)
     scatter_colors = cm.rainbow(np.linspace(0, 1, len(embeds)))
 
-    embed_sizes = [0] + [len(embed) for embed in embeds]
+    embed_sizes = [len(embed) for embed in embeds]
+    embed_indices = [0] + np.cumsum(embed_sizes)
     for i, _ in enumerate(embed_sizes):
-        if i == len(embed_sizes) - 1:
-            break
-        xs_part = xs[embed_sizes[i] : embed_sizes[i + 1]]
-        ys_part = ys[embed_sizes[i] : embed_sizes[i + 1]]
+        xs_part = xs[embed_indices[i] : embed_indices[i + 1]]
+        ys_part = ys[embed_indices[i] : embed_indices[i + 1]]
         plt.scatter(xs_part, ys_part, c=[scatter_colors[i]])
 
     # Save and show completed plot

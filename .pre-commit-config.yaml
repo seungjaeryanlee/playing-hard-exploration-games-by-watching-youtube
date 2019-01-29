@@ -1,0 +1,5 @@
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v2.1.0 # This is pre-commit-hooks version, NOT flake8 version!
+    hooks:
+    - id: flake8

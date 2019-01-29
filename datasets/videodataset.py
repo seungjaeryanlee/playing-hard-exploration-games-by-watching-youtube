@@ -1,6 +1,4 @@
-"""
-videodataset.py
-"""
+"""Dataset for embedding checkpoints to train agent."""
 import cv2
 import numpy as np
 import torch
@@ -9,24 +7,25 @@ from torch.utils.data import Dataset
 
 
 class VideoDataset(Dataset):
-    def __init__(self, filename, trim, crop, frame_rate=15):
-        """
-        Dataset for sampling video frames to embed for cycle consistency and
-        t-SNE.
+    """
+    Dataset for embedding checkpoints to train agent.
 
-        Parameters
-        ----------
-        filenames : list of str
-            List of filenames of video files.
-        trims : list of float
-            List of tuples `(begin_idx, end_idx)` that specify what frame
-            of the video to start and end.
-        crops : list of tuple
-            List of tuples `(x_1, y_1, x_2, y_2)` that define the clip window
-            of each video.
-        frame_rate : int
-            Frame rate to sample video. Default to 15.
-        """
+    Parameters
+    ----------
+    filenames : list of str
+        List of filenames of video files.
+    trims : list of float
+        List of tuples `(begin_idx, end_idx)` that specify what frame
+        of the video to start and end.
+    crops : list of tuple
+        List of tuples `(x_1, y_1, x_2, y_2)` that define the clip
+        window of each video.
+    frame_rate : int
+        Frame rate to sample video. Default to 15.
+
+    """
+
+    def __init__(self, filename, trim, crop, frame_rate=15):
         super().__init__()
 
         # Get video frames with scikit-video
@@ -53,10 +52,9 @@ class VideoDataset(Dataset):
         self.frames = np.transpose(self.frames, axes=(0, 3, 1, 2))
 
     def __len__(self):
-        """
-        Return a high number since this dataset in dynamic. Don't used this!
-        """
-        return len(self.frames) - 4
+        # Return a high number since this dataset in dynamic. Don't use
+        # this explicitly!
+        return np.iinfo(np.int64).max
 
     def __getitem__(self, index):
         """
@@ -69,6 +67,7 @@ class VideoDataset(Dataset):
         Returns
         -------
         framestack : torch.FloatTensor
+
         """
         # Stack Frames
         framestack = self.frames[index : index + 4]

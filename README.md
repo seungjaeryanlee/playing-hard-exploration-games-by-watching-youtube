@@ -4,6 +4,8 @@
 [![flake8 Build Status](https://img.shields.io/travis/com/seungjaeryanlee/playing-hard-exploration-games-by-watching-youtube.svg?label=flake8)](https://travis-ci.com/seungjaeryanlee/playing-hard-exploration-games-by-watching-youtube)
 [![isort Build Status](https://img.shields.io/travis/com/seungjaeryanlee/playing-hard-exploration-games-by-watching-youtube.svg?label=isort)](https://travis-ci.com/seungjaeryanlee/playing-hard-exploration-games-by-watching-youtube)
 
+[![numpydoc Docstring Style](https://img.shields.io/badge/docstring-numpydoc-blue.svg)](https://numpydoc.readthedocs.io/en/latest/format.html#docstring-standard)
+
 A PyTorch implementation of Playing Hard Exploration Games by Watching YouTube (DeepMind, May 2018)
 
 ## Installation

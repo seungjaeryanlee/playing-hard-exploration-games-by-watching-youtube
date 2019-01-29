@@ -1,18 +1,21 @@
+"""CMC network for embedding audio."""
 import torch.nn as nn
 
 
 class CMC(nn.Module):
-    def __init__(self, in_channels=256, out_channels=1024):
-        """
-        Embedding network for raw audio.
+    """
+    Embedding network for raw audio.
 
-        Parameters
-        ----------
-        in_channels : int
-            Number of channels in the input audio sample. Defaults to 256.
-        out_channels : int
-            Number of features in the output layer. Defaults to 1024.
-        """
+    Parameters
+    ----------
+    in_channels : int
+        Number of channels in the input audio sample. Defaults to 256.
+    out_channels : int
+        Number of features in the output layer. Defaults to 1024.
+
+    """
+
+    def __init__(self, in_channels=256, out_channels=1024):
         # Below is a paragraph from the original paper:
         #
         # The audio embedding function, ψ, is as per φ except that it
@@ -48,7 +51,7 @@ class CMC(nn.Module):
         )
         self.fc_layers = nn.Sequential(nn.Linear(512, out_channels))
 
-    def forward(self, x):
+    def forward(self, x):  # noqa: D102
         out = self.conv_layers(x)
         out = out.view(out.size(0), -1)
         out = self.fc_layers(out)

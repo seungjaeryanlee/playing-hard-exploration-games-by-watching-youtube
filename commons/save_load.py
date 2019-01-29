@@ -1,6 +1,4 @@
-"""
-save_load.py
-"""
+"""Save and load models."""
 import torch
 
 
@@ -26,6 +24,7 @@ def save_models(
         PATH to save the `.pth` files.
     prefix : str
         Prefix to append to each neural network filename.
+
     """
     prefix = path + prefix
     torch.save(tdc.state_dict(), "{}tdc.pth".format(prefix))
@@ -49,6 +48,7 @@ def load_models(tdc, cmc, path="saves/", prefix="best_"):
         PATH to save the `.pth` files.
     prefix : str
         Prefix to append to each neural network filename.
+
     """
     prefix = path + prefix
     tdc.load_state_dict(torch.load("{}tdc.pth".format(prefix)))

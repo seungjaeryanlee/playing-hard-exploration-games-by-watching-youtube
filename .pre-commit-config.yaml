@@ -1,0 +1,14 @@
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v2.1.0 # This is pre-commit-hooks version, NOT flake8 version!
+    hooks:
+    - id: flake8
+-   repo: https://github.com/ambv/black
+    rev: stable
+    hooks:
+    - id: black
+      language_version: python3.6
+-   repo: https://github.com/pre-commit/mirrors-isort
+    rev: 'v4.3.4'
+    hooks:
+    - id: isort

@@ -5,6 +5,7 @@
 [![isort Build Status](https://img.shields.io/travis/com/seungjaeryanlee/playing-hard-exploration-games-by-watching-youtube.svg?label=isort)](https://travis-ci.com/seungjaeryanlee/playing-hard-exploration-games-by-watching-youtube)
 
 [![numpydoc Docstring Style](https://img.shields.io/badge/docstring-numpydoc-blue.svg)](https://numpydoc.readthedocs.io/en/latest/format.html#docstring-standard)
+[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-blue.svg)](.pre-commit-config.yaml)
 
 A PyTorch implementation of Playing Hard Exploration Games by Watching YouTube (DeepMind, May 2018)
 

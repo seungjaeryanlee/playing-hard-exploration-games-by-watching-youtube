@@ -35,7 +35,7 @@ def plot_tsne(tsne_loaders, tdc, cmc, device, save=False, log_to_wandb=True):
     embeds = []
     for loader in tsne_loaders:
         embed_batches = []
-        for i, batch in enumerate(loader):
+        for _, batch in enumerate(loader):
             stack_batch, sample_batch = batch
             stack_embed_batch = tdc(stack_batch.to(device))
             sample_embed_batch = cmc(sample_batch.to(device))

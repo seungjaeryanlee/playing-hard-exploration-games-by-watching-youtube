@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-tsne.py
+Plot t-SNE to check embedding quality.
 
 TODO Separate TDC, CMC, TDC+CMC
 """
@@ -19,6 +19,19 @@ from networks import CMC, TDC
 
 
 def get_tsne_loaders(filenames, trims, crops):
+    """
+    Get TSNE dataloaders.
+
+    Parameters
+    ----------
+    filenames: list of str
+        Filenames of videos to use.
+    trims: list of tuple
+        Specify frame indices to use.
+    crops: list of tuple
+        Specify which part of image to use.
+
+    """
     datasets = [
         VideoAudioDataset(filename, trim, crop, frame_rate=15)
         for filename, trim, crop in zip(filenames, trims, crops)
@@ -32,6 +45,12 @@ def get_tsne_loaders(filenames, trims, crops):
 
 
 def plot_tsne(tsne_loaders, tdc, cmc, device, save=False, log_to_wandb=True):
+    """
+    Plot t-SNE of given dataloaders.
+
+    TODO Fix docstrings
+
+    """
     embeds = []
     for loader in tsne_loaders:
         embed_batches = []

@@ -1,3 +1,4 @@
+"""Train agent using embedder and embedded checkpoints."""
 import torch
 
 from commons import load_models
@@ -6,6 +7,12 @@ from wrappers import make_env
 
 
 def train_agent(device):
+    """
+    Train agent using embedder and embedded checkpoints.
+
+    TODO Fix docstrings once finished.
+
+    """
     # Load embedded network
     tdc = TDC().to(device)
     cmc = CMC().to(device)

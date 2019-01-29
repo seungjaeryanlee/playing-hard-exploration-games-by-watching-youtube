@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
-"""
-pretrain_embedding.py
-"""
+"""Pretrain TDC and CMC embedders."""
 import time
 
 import torch
@@ -33,10 +31,8 @@ def pretrain_embeddings(
     """
     Train the embedding networks and classifiers for TDC and CMC.
 
-    Parameters
-    ----------
-    args : dict
-        Dictionary of hyperparmeters.
+    TODO Fix docstrings
+
     """
     # TODO Add .eval() somewhere (t-SNE, Cycle consistency, DQN training)
     tdc.train()

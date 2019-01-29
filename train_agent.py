@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
-import numpy as np
 import torch
 import torch.nn.functional as F
 from torch.utils.data import DataLoader
 
-from commons import load_models
+from commons import load_tdc
 from datasets import VideoDataset
-from networks import CMC, TDC
+from networks import TDC
 from wrappers import make_env
 
 
@@ -19,6 +18,7 @@ def get_checkpoint_loader():
 
     return loader
 
+
 def get_checkpoints(tdc, loader):
     embed_batches = []
     for _, batch in enumerate(loader):
@@ -30,11 +30,11 @@ def get_checkpoints(tdc, loader):
 
     return embed_batches
 
+
 def train_agent(device):
-    # Load embedded network
+    # Load embedded TDC network
     tdc = TDC().to(device)
-    cmc = CMC().to(device)
-    load_models(tdc, cmc)
+    load_tdc(tdc)
 
     # Create checkpoints
     loader = get_checkpoint_loader()
@@ -42,7 +42,7 @@ def train_agent(device):
     print(checkpoints)
 
     # Create environment
-    env = make_env((tdc, cmc), checkpoints)
+    env = make_env(tdc, checkpoints)
 
     # TODO Temporarily added to disable flake8 error
     print(env)

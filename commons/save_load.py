@@ -53,3 +53,7 @@ def load_models(tdc, cmc, path="saves/", prefix="best_"):
     prefix = path + prefix
     tdc.load_state_dict(torch.load("{}tdc.pth".format(prefix)))
     cmc.load_state_dict(torch.load("{}cmc.pth".format(prefix)))
+
+
+def load_tdc(tdc, path="saves/", prefix="best_"):
+    tdc.load_state_dict(torch.load("{}tdc.pth".format(prefix)))

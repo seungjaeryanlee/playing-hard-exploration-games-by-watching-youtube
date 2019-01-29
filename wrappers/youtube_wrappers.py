@@ -1,3 +1,4 @@
+"""Environment wrapper for using YouTube checkpoints."""
 import gym
 
 DELTA_T = 1
@@ -5,6 +6,14 @@ ALPHA = 0.5
 
 
 class YouTubeWrapper(gym.Wrapper):
+    """
+    Wrap environment to include imitation reward.
+
+    Environment wrapper that gives imitation reward if the observation
+    is sufficiently similar to checkpoints.
+
+    """
+
     def __init__(self, env, embedding_net, ckpts):
         gym.Wrapper.__init__(self, env)
         self.embedding_net = embedding_net
@@ -12,7 +21,7 @@ class YouTubeWrapper(gym.Wrapper):
         self.ckpt_first = 0
         self.reset = self.env.reset()
 
-    def step(self, action):
+    def step(self, action):  # noqa: D102
         ob, reward, done, info = self.env.step(action)
 
         # Compute imitation reward
@@ -27,9 +36,7 @@ class YouTubeWrapper(gym.Wrapper):
 
 
 def wrap_youtube(env, embedding_net, ckpts):
-    """
-    Wrap environment to use YouTube checkpoints.
-    """
+    """Wrap environment to use YouTube checkpoints."""
     env = YouTubeWrapper(env, embedding_net, ckpts)
 
     return env

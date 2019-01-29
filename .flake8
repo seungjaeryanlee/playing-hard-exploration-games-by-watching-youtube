@@ -7,3 +7,4 @@ exclude =
     __pycache__,
     .ipynb_checkpoints,
     deprecated,
+    wrappers/atari_wrappers.py

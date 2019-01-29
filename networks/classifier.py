@@ -1,19 +1,23 @@
+"""Classifier for training TDC and CMC embedder."""
 import torch.nn as nn
 
 
 class Classifier(nn.Module):
+    """
+    Classifier network used for both TDC and CMC.
+
+    Parameters
+    ----------
+    in_channels : int
+        Number of features in the input layer. Should match the output
+        of TDC and CMC. Defaults to 1024.
+    out_channels : int
+        Number of features in the output layer. Should match the number
+        of classes. Defaults to 6.
+
+    """
+
     def __init__(self, in_channels=1024, out_channels=6):
-        """
-        Classifier network used for both TDC and CMC.
-        Parameters
-        ----------
-        in_channels : int
-            Number of features in the input layer. Should match the output of
-            TDC and CMC. Defaults to 1024.
-        out_channels : int
-            Number of features in the output layer. Should match the number of
-            classes. Defaults to 6.
-        """
         # Below is a paragraph from the original paper:
         #
         # The same shallow network architecture, τ , is used for both temporal
@@ -31,6 +35,6 @@ class Classifier(nn.Module):
             nn.Linear(in_channels, 1024), nn.ReLU(), nn.Linear(1024, out_channels)
         )
 
-    def forward(self, x):
+    def forward(self, x):  # noqa: D102
         out = self.layers(x)
         return out

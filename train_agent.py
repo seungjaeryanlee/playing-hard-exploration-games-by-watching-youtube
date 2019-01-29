@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import numpy as np
 import torch
 import torch.nn.functional as F
@@ -25,6 +26,7 @@ def get_checkpoints(tdc, loader):
         embed_batch = tdc(stack_batch.to(device))
         embed_batch = F.normalize(embed_batch).cpu().detach().numpy()
         embed_batches.append(embed_batch)
+        break
 
     return embed_batches
 

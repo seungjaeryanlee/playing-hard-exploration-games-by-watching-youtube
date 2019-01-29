@@ -1,8 +1,8 @@
 # exploration-with-youtube
 
-[![black Build Status](https://img.shields.io/travis/com/seungjaeryanlee/playing-hard-exploration-games-by-watching-youtube.svg?label=black)](https://travis-ci.com/seungjaeryanlee/playing-hard-exploration-games-by-watching-youtube)
-[![flake8 Build Status](https://img.shields.io/travis/com/seungjaeryanlee/playing-hard-exploration-games-by-watching-youtube.svg?label=flake8)](https://travis-ci.com/seungjaeryanlee/playing-hard-exploration-games-by-watching-youtube)
-[![isort Build Status](https://img.shields.io/travis/com/seungjaeryanlee/playing-hard-exploration-games-by-watching-youtube.svg?label=isort)](https://travis-ci.com/seungjaeryanlee/playing-hard-exploration-games-by-watching-youtube)
+[![black Build Status](https://img.shields.io/travis/com/seungjaeryanlee/playing-hard-exploration-games-by-watching-youtube/master.svg?label=black)](https://travis-ci.com/seungjaeryanlee/playing-hard-exploration-games-by-watching-youtube)
+[![flake8 Build Status](https://img.shields.io/travis/com/seungjaeryanlee/playing-hard-exploration-games-by-watching-youtube/master.svg?label=flake8)](https://travis-ci.com/seungjaeryanlee/playing-hard-exploration-games-by-watching-youtube)
+[![isort Build Status](https://img.shields.io/travis/com/seungjaeryanlee/playing-hard-exploration-games-by-watching-youtube/master.svg?label=isort)](https://travis-ci.com/seungjaeryanlee/playing-hard-exploration-games-by-watching-youtube)
 
 [![numpydoc Docstring Style](https://img.shields.io/badge/docstring-numpydoc-blue.svg)](https://numpydoc.readthedocs.io/en/latest/format.html#docstring-standard)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-blue.svg)](.pre-commit-config.yaml)

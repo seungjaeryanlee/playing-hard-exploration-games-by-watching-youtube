@@ -1,4 +1,5 @@
 """Classifier for training TDC and CMC embedder."""
+import torch
 import torch.nn as nn
 
 
@@ -17,7 +18,7 @@ class Classifier(nn.Module):
 
     """
 
-    def __init__(self, in_channels=1024, out_channels=6):
+    def __init__(self, in_channels: int = 1024, out_channels: int = 6) -> None:
         # Below is a paragraph from the original paper:
         #
         # The same shallow network architecture, τ , is used for both temporal
@@ -35,6 +36,6 @@ class Classifier(nn.Module):
             nn.Linear(in_channels, 1024), nn.ReLU(), nn.Linear(1024, out_channels)
         )
 
-    def forward(self, x):  # noqa: D102
+    def forward(self, x: torch.FloatTensor) -> torch.FloatTensor:  # noqa: D102
         out = self.layers(x)
         return out

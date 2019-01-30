@@ -1,4 +1,5 @@
 """TDC network for embedding video."""
+import torch
 import torch.nn as nn
 
 
@@ -15,7 +16,7 @@ class ResidualBlock(nn.Module):
 
     """
 
-    def __init__(self, in_channels, out_channels):
+    def __init__(self, in_channels: int, out_channels: int) -> None:
         super().__init__()
         self.layers = nn.Sequential(
             nn.Conv2d(in_channels, out_channels, 3, padding=1),
@@ -26,7 +27,7 @@ class ResidualBlock(nn.Module):
         )
         self.final_relu = nn.ReLU(inplace=True)
 
-    def forward(self, x):  # noqa: D102
+    def forward(self, x: torch.FloatTensor) -> torch.FloatTensor:  # noqa: D102
         out = self.layers(x) + x
         return self.final_relu(out)
 
@@ -44,7 +45,7 @@ class TDC(nn.Module):
 
     """
 
-    def __init__(self, in_channels=12, out_channels=1024):
+    def __init__(self, in_channels: int = 12, out_channels: int = 1024) -> None:
         # Below is a paragraph from the original paper:
         #
         # The visual embedding function, φ, is composed of three spatial,
@@ -80,7 +81,7 @@ class TDC(nn.Module):
             nn.Linear(16384, 1024), nn.Linear(1024, out_channels)
         )
 
-    def forward(self, x):  # noqa: D102
+    def forward(self, x: torch.FloatTensor) -> torch.FloatTensor:  # noqa: D102
         out = self.conv_layers(x)
         out = out.view(out.size(0), -1)
         out = self.fc_layers(out)

@@ -4,6 +4,8 @@ Plot t-SNE to check embedding quality.
 
 TODO Separate TDC, CMC, TDC+CMC
 """
+from typing import Any, List, Tuple
+
 import matplotlib.cm as cm
 import matplotlib.pyplot as plt
 import numpy as np
@@ -18,7 +20,11 @@ from datasets import VideoAudioDataset
 from networks import CMC, TDC
 
 
-def get_tsne_loaders(filenames, trims, crops):
+def get_tsne_loaders(
+    filenames: List[str],
+    trims: List[Tuple[int, int]],
+    crops: List[Tuple[int, int, int, int]],
+) -> List[Any]:
     """
     Get TSNE dataloaders.
 
@@ -44,7 +50,14 @@ def get_tsne_loaders(filenames, trims, crops):
     return loaders
 
 
-def plot_tsne(tsne_loaders, tdc, cmc, device, save=False, log_to_wandb=True):
+def plot_tsne(
+    tsne_loaders: List[Any],
+    tdc: Any,
+    cmc: Any,
+    device: Any,
+    save: bool = False,
+    log_to_wandb: bool = True,
+) -> None:
     """
     Plot t-SNE of given dataloaders.
 

@@ -1,4 +1,6 @@
 """Train agent using embedder and embedded checkpoints."""
+from typing import Any, List
+
 import torch
 
 from commons import load_models
@@ -6,7 +8,7 @@ from networks import CMC, TDC
 from wrappers import make_env
 
 
-def train_agent(device):
+def train_agent(device: Any) -> None:
     """
     Train agent using embedder and embedded checkpoints.
 
@@ -19,7 +21,7 @@ def train_agent(device):
     load_models(tdc, cmc)
 
     # TODO Create checkpoints
-    checkpoints = []
+    checkpoints: List[torch.Tensor] = []
 
     # Create environment
     env = make_env((tdc, cmc), checkpoints)

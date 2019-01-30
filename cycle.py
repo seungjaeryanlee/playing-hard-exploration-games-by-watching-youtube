@@ -1,8 +1,10 @@
 """Check cycle consistency to test embedding quality."""
+from typing import Any
+
 import torch
 
 
-def cycle_consistency(dataset1, dataset2):
+def cycle_consistency(dataset1: Any, dataset2: Any) -> None:
     """
     Check cycle consistency of two datasets to test embedding quality.
 

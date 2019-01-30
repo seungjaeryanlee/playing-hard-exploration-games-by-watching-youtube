@@ -1,4 +1,6 @@
 """Dataset for embedding checkpoints to train agent."""
+from typing import Tuple
+
 import cv2
 import numpy as np
 import torch
@@ -25,7 +27,13 @@ class VideoDataset(Dataset):
 
     """
 
-    def __init__(self, filename, trim, crop, frame_rate=15):
+    def __init__(
+        self,
+        filename: str,
+        trim: Tuple[int, int],
+        crop: Tuple[int, int, int, int],
+        frame_rate: float = 15,
+    ) -> None:
         super().__init__()
 
         # Get video frames with scikit-video
@@ -34,7 +42,7 @@ class VideoDataset(Dataset):
             inputdict={"-r": str(frame_rate)},
             outputdict={"-r": str(frame_rate)},
         )
-        self.frames = []
+        self.frames: np.ndarray = []
         for frame_idx, frame in enumerate(reader.nextFrame()):
             # Trim video (time)
             if frame_idx < trim[0]:
@@ -51,12 +59,12 @@ class VideoDataset(Dataset):
         self.frames = np.array(self.frames, dtype=float)
         self.frames = np.transpose(self.frames, axes=(0, 3, 1, 2))
 
-    def __len__(self):
+    def __len__(self) -> int:
         # Return a high number since this dataset in dynamic. Don't use
         # this explicitly!
         return np.iinfo(np.int64).max
 
-    def __getitem__(self, index):
+    def __getitem__(self, index: int) -> int:
         """
         Return a single framestack.
 

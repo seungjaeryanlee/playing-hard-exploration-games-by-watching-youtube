@@ -1,4 +1,6 @@
 """Environment wrapper to train PyTorch networks."""
+from typing import Any, Tuple
+
 import gym
 import numpy as np
 import torch
@@ -13,15 +15,19 @@ class TorchTensorWrapper(gym.Wrapper):
     `env.step()` to `torch.Tensor`.
     """
 
-    def __init__(self, env):
+    def __init__(self, env: Any) -> None:
         gym.Wrapper.__init__(self, env)
 
-    def reset(self):  # noqa: D102
+    def reset(self) -> torch.FloatTensor:  # noqa: D102
         ob = self.env.reset()
         ob = torch.FloatTensor([ob])
         return ob
 
-    def step(self, action):  # noqa: D102
+    def step(
+        self, action: Any
+    ) -> Tuple[
+        torch.FloatTensor, torch.FloatTensor, torch.FloatTensor, dict
+    ]:  # noqa: D102
         ob, reward, done, info = self.env.step(action)
         ob = torch.FloatTensor([ob])
         reward = torch.FloatTensor([reward])
@@ -37,18 +43,20 @@ class TorchPermuteWrapper(gym.ObservationWrapper):
     observation to PyTorch style: NCHW.
     """
 
-    def __init__(self, env):
+    def __init__(self, env: Any) -> None:
         gym.ObservationWrapper.__init__(self, env)
         shp = env.observation_space.shape
         self.observation_space = spaces.Box(
             low=0, high=1, shape=(shp[2], shp[0], shp[1]), dtype=np.float32
         )
 
-    def observation(self, observation):  # noqa: D102
+    def observation(
+        self, observation: torch.FloatTensor
+    ) -> torch.FloatTensor:  # noqa: D102
         return observation.permute(0, 3, 1, 2)
 
 
-def wrap_pytorch(env):
+def wrap_pytorch(env: Any) -> Any:
     """Wrap environment to be compliant to PyTorch agents."""
     env = TorchTensorWrapper(env)
     env = TorchPermuteWrapper(env)

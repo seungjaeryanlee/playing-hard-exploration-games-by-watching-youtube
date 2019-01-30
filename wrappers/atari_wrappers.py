@@ -4,6 +4,7 @@ atari_wrappers.py
 From OpenAI Baselines repository:
 https://github.com/openai/baselines/blob/master/baselines/common/atari_wrappers.py
 """
+
 import os
 from collections import deque
 

@@ -1,4 +1,5 @@
 """CMC network for embedding audio."""
+import torch
 import torch.nn as nn
 
 
@@ -15,7 +16,7 @@ class CMC(nn.Module):
 
     """
 
-    def __init__(self, in_channels=256, out_channels=1024):
+    def __init__(self, in_channels: int = 256, out_channels: int = 1024):
         # Below is a paragraph from the original paper:
         #
         # The audio embedding function, ψ, is as per φ except that it
@@ -51,7 +52,7 @@ class CMC(nn.Module):
         )
         self.fc_layers = nn.Sequential(nn.Linear(512, out_channels))
 
-    def forward(self, x):  # noqa: D102
+    def forward(self, x: torch.FloatTensor) -> torch.FloatTensor:  # noqa: D102
         out = self.conv_layers(x)
         out = out.view(out.size(0), -1)
         out = self.fc_layers(out)

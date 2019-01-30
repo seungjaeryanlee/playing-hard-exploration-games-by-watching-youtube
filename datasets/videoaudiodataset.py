@@ -1,6 +1,6 @@
-"""
-videoaudiodataset.py
-"""
+"""Dataset for cycle consistecy check and t-SNE embedding."""
+from typing import Tuple
+
 import cv2
 import librosa
 import numpy as np
@@ -10,24 +10,34 @@ from torch.utils.data import Dataset
 
 
 class VideoAudioDataset(Dataset):
-    def __init__(self, filename, trim, crop, frame_rate=15):
-        """
-        Dataset for sampling video frames and audio samples to embed for
-        cycle consistency and t-SNE.
+    """
+    Dataset for cycle consistecy check and t-SNE embedding.
 
-        Parameters
-        ----------
-        filenames : list of str
-            List of filenames of video files.
-        trims : list of float
-            List of tuples `(begin_idx, end_idx)` that specify what frame
-            of the video to start and end.
-        crops : list of tuple
-            List of tuples `(x_1, y_1, x_2, y_2)` that define the clip window
-            of each video.
-        frame_rate : int
-            Frame rate to sample video. Default to 15.
-        """
+    Dataset for sampling video frames and audio samples to embed and
+    check cycle consistency and t-SNE.
+
+    Parameters
+    ----------
+    filenames : list of str
+        List of filenames of video files.
+    trims : list of float
+        List of tuples `(begin_idx, end_idx)` that specify what frame
+        of the video to start and end.
+    crops : list of tuple
+        List of tuples `(x_1, y_1, x_2, y_2)` that define the clip
+        window of each video.
+    frame_rate : int
+        Frame rate to sample video. Default to 15.
+
+    """
+
+    def __init__(
+        self,
+        filename: str,
+        trim: Tuple[int, int],
+        crop: Tuple[int, int, int, int],
+        frame_rate: float = 15,
+    ) -> None:
         super().__init__()
 
         # Get video frames with scikit-video
@@ -36,7 +46,7 @@ class VideoAudioDataset(Dataset):
             inputdict={"-r": str(frame_rate)},
             outputdict={"-r": str(frame_rate)},
         )
-        self.frames = []
+        self.frames: np.ndarray = []
         for frame_idx, frame in enumerate(reader.nextFrame()):
             # Trim video (time)
             if frame_idx < trim[0]:
@@ -57,15 +67,14 @@ class VideoAudioDataset(Dataset):
         D = librosa.core.stft(y, n_fft=510)
         self.samples = np.abs(D)
 
-    def __len__(self):
-        """
-        Return a high number since this dataset in dynamic. Don't used this!
-        """
-        return len(self.frames) - 4
+    def __len__(self) -> int:
+        # Return a high number since this dataset in dynamic. Don't use
+        # this explicitly!
+        return np.iinfo(np.int64).max
 
-    def __getitem__(self, index):
+    def __getitem__(self, index: int) -> Tuple[torch.FloatTensor, torch.FloatTensor]:
         """
-        Return a single framestack.
+        Return a single framestack with audio.
 
         Parameters
         ----------
@@ -74,6 +83,8 @@ class VideoAudioDataset(Dataset):
         Returns
         -------
         framestack : torch.FloatTensor
+        sample: torch.FloatTensor
+
         """
         # Stack Frames
         framestack = self.frames[index : index + 4]

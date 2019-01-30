@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
-"""
-pretrain_embedding.py
-"""
+"""Pretrain TDC and CMC embedders."""
 import time
+from typing import Any, List
 
 import torch
 import torch.nn.functional as F
@@ -17,26 +16,24 @@ from tsne import get_tsne_loaders, plot_tsne
 
 
 def pretrain_embeddings(
-    loader,
-    tdc,
-    cmc,
-    tdc_classifier,
-    cmc_classifier,
-    optimizer,
-    tsne_loaders,
-    device,
-    CMC_LAMBDA,
-    NB_STEPS,
-    SAVE_INTERVAL,
-    TSNE_INTERVAL,
-):
+    loader: torch.utils.data.DataLoader,
+    tdc: Any,
+    cmc: Any,
+    tdc_classifier: Any,
+    cmc_classifier: Any,
+    optimizer: Any,
+    tsne_loaders: List[Any],
+    device: Any,
+    CMC_LAMBDA: float,
+    NB_STEPS: int,
+    SAVE_INTERVAL: int,
+    TSNE_INTERVAL: int,
+) -> None:
     """
     Train the embedding networks and classifiers for TDC and CMC.
 
-    Parameters
-    ----------
-    args : dict
-        Dictionary of hyperparmeters.
+    TODO Fix docstrings
+
     """
     # TODO Add .eval() somewhere (t-SNE, Cycle consistency, DQN training)
     tdc.train()

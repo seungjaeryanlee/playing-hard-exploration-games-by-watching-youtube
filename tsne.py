@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 """
-tsne.py
+Plot t-SNE to check embedding quality.
 
 TODO Separate TDC, CMC, TDC+CMC
 """
+from typing import Any, List, Tuple
+
 import matplotlib.cm as cm
 import matplotlib.pyplot as plt
 import numpy as np
@@ -18,7 +20,24 @@ from datasets import VideoAudioDataset
 from networks import CMC, TDC
 
 
-def get_tsne_loaders(filenames, trims, crops):
+def get_tsne_loaders(
+    filenames: List[str],
+    trims: List[Tuple[int, int]],
+    crops: List[Tuple[int, int, int, int]],
+) -> List[Any]:
+    """
+    Get TSNE dataloaders.
+
+    Parameters
+    ----------
+    filenames: list of str
+        Filenames of videos to use.
+    trims: list of tuple
+        Specify frame indices to use.
+    crops: list of tuple
+        Specify which part of image to use.
+
+    """
     datasets = [
         VideoAudioDataset(filename, trim, crop, frame_rate=15)
         for filename, trim, crop in zip(filenames, trims, crops)
@@ -31,11 +50,24 @@ def get_tsne_loaders(filenames, trims, crops):
     return loaders
 
 
-def plot_tsne(tsne_loaders, tdc, cmc, device, save=False, log_to_wandb=True):
+def plot_tsne(
+    tsne_loaders: List[Any],
+    tdc: Any,
+    cmc: Any,
+    device: Any,
+    save: bool = False,
+    log_to_wandb: bool = True,
+) -> None:
+    """
+    Plot t-SNE of given dataloaders.
+
+    TODO Fix docstrings
+
+    """
     embeds = []
     for loader in tsne_loaders:
         embed_batches = []
-        for i, batch in enumerate(loader):
+        for _, batch in enumerate(loader):
             stack_batch, sample_batch = batch
             stack_embed_batch = tdc(stack_batch.to(device))
             sample_embed_batch = cmc(sample_batch.to(device))

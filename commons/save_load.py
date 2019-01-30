@@ -1,12 +1,18 @@
-"""
-save_load.py
-"""
+"""Save and load models."""
+from typing import Any
+
 import torch
 
 
 def save_models(
-    tdc, cmc, tdc_classifier, cmc_classifier, optimizer, path="saves/", prefix="best_"
-):
+    tdc: Any,
+    cmc: Any,
+    tdc_classifier: Any,
+    cmc_classifier: Any,
+    optimizer: Any,
+    path: str = "saves/",
+    prefix: str = "best_",
+) -> None:
     """
     Save trained models to .pth files.
 
@@ -26,6 +32,7 @@ def save_models(
         PATH to save the `.pth` files.
     prefix : str
         Prefix to append to each neural network filename.
+
     """
     prefix = path + prefix
     torch.save(tdc.state_dict(), "{}tdc.pth".format(prefix))
@@ -35,25 +42,41 @@ def save_models(
     torch.save(optimizer.state_dict(), "{}optim.pth".format(prefix))
 
 
-def load_models(tdc, cmc, path="saves/", prefix="best_"):
+def load_models(
+    tdc: Any, cmc: Any, path: str = "saves/", prefix: str = "best_"
+) -> None:
     """
     Load trained models from .pth files.
 
     Parameters
     ----------
     tdc : nn.Module
-        Trained visual embedding network.
+        Visual embedding network to load parameters to.
     cmc : nn.Module
-        Trained audio embedding network.
+        Audio embedding network to load parameters to.
     path : str
-        PATH to save the `.pth` files.
+        PATH to load the `.pth` files from.
     prefix : str
-        Prefix to append to each neural network filename.
+        Prefix of each neural network filename.
+
     """
     prefix = path + prefix
     tdc.load_state_dict(torch.load("{}tdc.pth".format(prefix)))
     cmc.load_state_dict(torch.load("{}cmc.pth".format(prefix)))
 
 
-def load_tdc(tdc, path="saves/", prefix="best_"):
+def load_tdc(tdc: Any, path: str = "saves/", prefix: str = "best_") -> None:
+    """
+    Load trained TDC network.
+
+    Parameters
+    ----------
+    tdc : nn.Module
+        Visual embedding network to load parameters to.
+    path : str
+        PATH to load the `.pth` files from.
+    prefix : str
+        Prefix of each neural network filename.
+
+    """
     tdc.load_state_dict(torch.load("{}tdc.pth".format(prefix)))

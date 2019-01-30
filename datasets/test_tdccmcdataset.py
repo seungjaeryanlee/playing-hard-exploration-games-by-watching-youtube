@@ -1,6 +1,4 @@
-"""
-test_tdccmcdataset.py
-"""
+"""Test TDCCMCDataset."""
 import torch
 from torch.utils.data import DataLoader
 
@@ -14,10 +12,8 @@ batch = next(iter(loader))
 batch_v, batch_w, batch_a, batch_tdc_label, batch_cmc_label = batch
 
 
-def test_batch_type():
-    """
-    Test if the batch returned by loader is of correct type.
-    """
+def test_batch_type() -> None:
+    """Test if the batch returned by loader is of correct type."""
     print(type(batch_v))
     print(type(batch_w))
     print(type(batch_a))
@@ -30,10 +26,8 @@ def test_batch_type():
     assert type(batch_cmc_label) == torch.Tensor
 
 
-def test_batch_dtype():
-    """
-    Test if the batch returned by loader is of correct datatype.
-    """
+def test_batch_dtype() -> None:
+    """Test if the batch returned by loader is of correct datatype."""
     print(batch_v.dtype)
     print(batch_w.dtype)
     print(batch_a.dtype)
@@ -46,10 +40,8 @@ def test_batch_dtype():
     assert batch_cmc_label.dtype == torch.int64
 
 
-def test_batch_shape():
-    """
-    Test if the batch returned by loader is of correct shape.
-    """
+def test_batch_shape() -> None:
+    """Test if the batch returned by loader is of correct shape."""
     print(batch_v.shape)
     print(batch_w.shape)
     print(batch_a.shape)

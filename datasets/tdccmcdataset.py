@@ -1,6 +1,6 @@
-"""
-tdccmcdataset.py
-"""
+"""Dataset for training TDC and CMC."""
+from typing import List, Tuple
+
 import cv2
 import librosa
 import numpy as np
@@ -10,24 +10,34 @@ from torch.utils.data import Dataset
 
 
 class TDCCMCDataset(Dataset):
-    def __init__(self, filenames, trims, crops, frame_rate=15):
-        """
-        Dataset for sampling video frames and audio snippets with distance
-        labels to train the embedding networks.
+    """
+    Dataset for training TDC and CMC.
 
-        Parameters
-        ----------
-        filenames : list of str
-            List of filenames of video files.
-        trims : list of float
-            List of tuples `(begin_idx, end_idx)` that specify what frame
-            of the video to start and end.
-        crops : list of tuple
-            List of tuples `(x_1, y_1, x_2, y_2)` that define the clip window
-            of each video.
-        frame_rate : int
-            Frame rate to sample video. Default to 15.
-        """
+    Dataset for sampling video frames and audio snippets with distance
+    labels to train the embedding networks.
+
+    Parameters
+    ----------
+    filenames : list of str
+        List of filenames of video files.
+    trims : list of float
+        List of tuples `(begin_idx, end_idx)` that specify what frame
+        of the video to start and end.
+    crops : list of tuple
+        List of tuples `(x_1, y_1, x_2, y_2)` that define the clip
+        window of each video.
+    frame_rate : int
+        Frame rate to sample video. Default to 15.
+
+    """
+
+    def __init__(
+        self,
+        filenames: List[str],
+        trims: List[Tuple[int, int]],
+        crops: List[Tuple[int, int, int, int]],
+        frame_rate: float = 15,
+    ):
         # TDCCMCDataset is an unconvential dataset, where each data is
         # dynamically sampled whenever needed instead of a static dataset.
         # Therefore, in `__init__`, we do not define a static dataset. Instead,
@@ -35,7 +45,7 @@ class TDCCMCDataset(Dataset):
 
         super().__init__()
 
-        self.sources = []
+        self.sources: List[Tuple[np.ndarray, np.ndarray]] = []
         for filename, trim, crop in zip(filenames, trims, crops):
             # Get video frames with scikit-video
             reader = FFmpegReader(
@@ -68,16 +78,25 @@ class TDCCMCDataset(Dataset):
             # Save video frames and audio
             self.sources.append((frames, D))
 
-    def __len__(self):
-        """
-        Return a high number since this dataset in dynamic. Don't used this!
-        """
+    def __len__(self) -> int:
+        # Return a high number since this dataset in dynamic. Don't use
+        # this explicitly!
         return np.iinfo(np.int64).max
 
-    def __getitem__(self, index):
+    def __getitem__(
+        self, index: int
+    ) -> Tuple[
+        torch.FloatTensor,
+        torch.FloatTensor,
+        torch.FloatTensor,
+        torch.LongTensor,
+        torch.LongTensor,
+    ]:
         """
-        Return a sample from the dynamic dataset. Each sample contains two
-        video frames, one audio snippet, one TDC label and one CMC label.
+        Return a sample from the dynamic dataset.
+
+        Each sample contains two video frames, one audio snippet, one
+        TDC label and one CMC label. In other words, the format is
         (frame_v, frame_w, audio_a, tdc_label, cmc_label).
 
         Parameters
@@ -91,6 +110,7 @@ class TDCCMCDataset(Dataset):
         audio_a
         tdc_label : torch.LongTensor
         cmc_label : torch.LongTensor
+
         """
         # Below is a paragraph from the original paper:
         #
@@ -154,7 +174,7 @@ class TDCCMCDataset(Dataset):
             torch.LongTensor([cmc_label]),
         )
 
-    def _sample_label(self):
+    def _sample_label(self) -> int:
         """
         Sample randomly from label.
 
@@ -166,7 +186,7 @@ class TDCCMCDataset(Dataset):
         """
         return np.random.choice(6)
 
-    def _sample_distance_from_label(self, label):
+    def _sample_distance_from_label(self, label: int) -> int:
         """
         Sample randomly from distance from label.
 
@@ -186,6 +206,7 @@ class TDCCMCDataset(Dataset):
         -------
         distance: int
             Distance sampled according to the label.
+
         """
         if label == 0:  # [0]
             distance = 0

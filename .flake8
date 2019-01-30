@@ -1,9 +1,10 @@
 [flake8]
 max-line-length = 80
-select = C,E,F,W,B,B950
-ignore = E203,E501,W503
+select = C,E,F,W,B,B950,D
+ignore = E203,E501,W503,D105,D107
 exclude =
     .git,
     __pycache__,
     .ipynb_checkpoints,
     deprecated,
+    wrappers/atari_wrappers.py

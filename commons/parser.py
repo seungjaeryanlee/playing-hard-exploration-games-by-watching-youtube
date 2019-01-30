@@ -1,10 +1,22 @@
-"""
-parser.py
-"""
+"""Parsers for pretraining embedding and training agent."""
 import argparse
 
 
-def get_args(description="YouTube"):
+def get_args(description: str = "YouTube") -> argparse.Namespace:
+    """
+    Retrieve parsed arguments as a Namespace.
+
+    Parameters
+    ----------
+    description : str
+        Description given to ArgumentParser.
+
+    Returns
+    -------
+    args : argparse.Namespace
+        Namespace with arguments specified.
+
+    """
     parser = argparse.ArgumentParser(description)
     # Hyperparameters for pretraining embedding
     # TODO Find correct lambda value from paper

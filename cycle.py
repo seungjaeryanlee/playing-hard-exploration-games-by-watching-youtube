@@ -1,12 +1,21 @@
-"""
-cycle.py
+"""Check cycle consistency to test embedding quality."""
+from typing import Any
 
-TODO Implement Cycle consistency
-"""
 import torch
 
 
-def cycle_consistency(dataset1, dataset2):
+def cycle_consistency(dataset1: Any, dataset2: Any) -> None:
+    """
+    Check cycle consistency of two datasets to test embedding quality.
+
+    Parameters
+    ----------
+    dataset1
+        Dataset of video to check cycle consistency of.
+    dataset2
+        Dataset of video to check cycle consistency of.
+
+    """
     N = min(dataset1.frames.shape[0], dataset2.frames.shape[0])
     N = N - N % 4
     nb_frames = N // 4

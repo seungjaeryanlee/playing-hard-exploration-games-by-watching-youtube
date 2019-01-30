@@ -3,9 +3,10 @@ python:
   - "3.6"
 install:
   - pip install -r requirements.txt --quiet
-  - pip install black flake8 isort
+  - pip install -r requirements-dev.txt --quiet
 script:
   - black --check .
   - flake8
   - isort **/*.py -c -vb
+  - mypy .
 cache: pip

@@ -2,7 +2,7 @@
 import argparse
 
 
-def get_args(description="YouTube"):
+def get_args(description: str = "YouTube") -> argparse.Namespace:
     """
     Retrieve parsed arguments as a Namespace.
 

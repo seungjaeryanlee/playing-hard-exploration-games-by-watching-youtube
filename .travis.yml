@@ -8,4 +8,5 @@ script:
   - black --check .
   - flake8
   - isort **/*.py -c -vb
+  - mypy .
 cache: pip

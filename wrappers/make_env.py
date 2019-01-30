@@ -1,10 +1,12 @@
 """Make wrapped standardized environments."""
+from typing import Any, List
+
 from .atari_wrappers import make_atari, wrap_deepmind
 from .torch_wrappers import wrap_pytorch
 from .youtube_wrappers import wrap_youtube
 
 
-def make_env(embedding_net, ckpts):
+def make_env(embedding_net: Any, ckpts: List[Any]) -> Any:
     """
     Make wrapped standardized environments.
 

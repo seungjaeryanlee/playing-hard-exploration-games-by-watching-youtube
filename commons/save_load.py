@@ -1,10 +1,18 @@
 """Save and load models."""
+from typing import Any
+
 import torch
 
 
 def save_models(
-    tdc, cmc, tdc_classifier, cmc_classifier, optimizer, path="saves/", prefix="best_"
-):
+    tdc: Any,
+    cmc: Any,
+    tdc_classifier: Any,
+    cmc_classifier: Any,
+    optimizer: Any,
+    path: str = "saves/",
+    prefix: str = "best_",
+) -> None:
     """
     Save trained models to .pth files.
 
@@ -34,7 +42,9 @@ def save_models(
     torch.save(optimizer.state_dict(), "{}optim.pth".format(prefix))
 
 
-def load_models(tdc, cmc, path="saves/", prefix="best_"):
+def load_models(
+    tdc: Any, cmc: Any, path: str = "saves/", prefix: str = "best_"
+) -> None:
     """
     Load trained models from .pth files.
 

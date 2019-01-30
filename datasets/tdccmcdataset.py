@@ -1,4 +1,6 @@
 """Dataset for training TDC and CMC."""
+from typing import List, Tuple
+
 import cv2
 import librosa
 import numpy as np
@@ -29,7 +31,13 @@ class TDCCMCDataset(Dataset):
 
     """
 
-    def __init__(self, filenames, trims, crops, frame_rate=15):
+    def __init__(
+        self,
+        filenames: List[str],
+        trims: List[Tuple[int, int]],
+        crops: List[Tuple[int, int, int, int]],
+        frame_rate: float = 15,
+    ):
         # TDCCMCDataset is an unconvential dataset, where each data is
         # dynamically sampled whenever needed instead of a static dataset.
         # Therefore, in `__init__`, we do not define a static dataset. Instead,
@@ -37,7 +45,7 @@ class TDCCMCDataset(Dataset):
 
         super().__init__()
 
-        self.sources = []
+        self.sources: List[Tuple[np.ndarray, np.ndarray]] = []
         for filename, trim, crop in zip(filenames, trims, crops):
             # Get video frames with scikit-video
             reader = FFmpegReader(
@@ -70,12 +78,20 @@ class TDCCMCDataset(Dataset):
             # Save video frames and audio
             self.sources.append((frames, D))
 
-    def __len__(self):
+    def __len__(self) -> int:
         # Return a high number since this dataset in dynamic. Don't use
         # this explicitly!
         return np.iinfo(np.int64).max
 
-    def __getitem__(self, index):
+    def __getitem__(
+        self, index: int
+    ) -> Tuple[
+        torch.FloatTensor,
+        torch.FloatTensor,
+        torch.FloatTensor,
+        torch.LongTensor,
+        torch.LongTensor,
+    ]:
         """
         Return a sample from the dynamic dataset.
 
@@ -158,7 +174,7 @@ class TDCCMCDataset(Dataset):
             torch.LongTensor([cmc_label]),
         )
 
-    def _sample_label(self):
+    def _sample_label(self) -> int:
         """
         Sample randomly from label.
 
@@ -170,7 +186,7 @@ class TDCCMCDataset(Dataset):
         """
         return np.random.choice(6)
 
-    def _sample_distance_from_label(self, label):
+    def _sample_distance_from_label(self, label: int) -> int:
         """
         Sample randomly from distance from label.
 

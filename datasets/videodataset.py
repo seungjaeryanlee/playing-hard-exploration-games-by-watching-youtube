@@ -38,7 +38,7 @@ class VideoDataset(Dataset):
 
         # Get video frames with scikit-video
         reader = FFmpegReader(
-            filename,
+            filename + ".mp4",
             inputdict={"-r": str(frame_rate)},
             outputdict={"-r": str(frame_rate)},
         )

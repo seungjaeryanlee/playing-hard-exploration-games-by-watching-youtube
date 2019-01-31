@@ -79,4 +79,5 @@ def load_tdc(tdc: Any, path: str = "saves/", prefix: str = "best_") -> None:
         Prefix of each neural network filename.
 
     """
+    prefix = path + prefix
     tdc.load_state_dict(torch.load("{}tdc.pth".format(prefix)))

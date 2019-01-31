@@ -53,7 +53,6 @@ def get_checkpoints(tdc: Any, loader: Any) -> List[Any]:
         embed_batch = tdc(batch.to(device))
         embed_batch = F.normalize(embed_batch).cpu().detach().numpy()
         embed_batches.append(embed_batch)
-        break
 
     return embed_batches
 

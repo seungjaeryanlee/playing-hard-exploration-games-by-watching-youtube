@@ -71,7 +71,6 @@ def train_agent(device: Any) -> None:
     # Create checkpoints
     loader = get_checkpoint_loader()
     checkpoints: List[torch.Tensor] = get_checkpoints(tdc, loader)
-    print(checkpoints)
 
     # Create environment
     env = make_env(tdc, checkpoints)

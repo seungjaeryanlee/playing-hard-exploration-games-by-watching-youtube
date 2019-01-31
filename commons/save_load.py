@@ -51,15 +51,33 @@ def load_models(
     Parameters
     ----------
     tdc : nn.Module
-        Trained visual embedding network.
+        Visual embedding network to load parameters to.
     cmc : nn.Module
-        Trained audio embedding network.
+        Audio embedding network to load parameters to.
     path : str
-        PATH to save the `.pth` files.
+        PATH to load the `.pth` files from.
     prefix : str
-        Prefix to append to each neural network filename.
+        Prefix of each neural network filename.
 
     """
     prefix = path + prefix
     tdc.load_state_dict(torch.load("{}tdc.pth".format(prefix)))
     cmc.load_state_dict(torch.load("{}cmc.pth".format(prefix)))
+
+
+def load_tdc(tdc: Any, path: str = "saves/", prefix: str = "best_") -> None:
+    """
+    Load trained TDC network.
+
+    Parameters
+    ----------
+    tdc : nn.Module
+        Visual embedding network to load parameters to.
+    path : str
+        PATH to load the `.pth` files from.
+    prefix : str
+        Prefix of each neural network filename.
+
+    """
+    prefix = path + prefix
+    tdc.load_state_dict(torch.load("{}tdc.pth".format(prefix)))

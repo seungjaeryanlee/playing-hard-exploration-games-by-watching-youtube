@@ -38,7 +38,7 @@ class VideoDataset(Dataset):
 
         # Get video frames with scikit-video
         reader = FFmpegReader(
-            filename,
+            filename + ".mp4",
             inputdict={"-r": str(frame_rate)},
             outputdict={"-r": str(frame_rate)},
         )
@@ -60,9 +60,7 @@ class VideoDataset(Dataset):
         self.frames = np.transpose(self.frames, axes=(0, 3, 1, 2))
 
     def __len__(self) -> int:
-        # Return a high number since this dataset in dynamic. Don't use
-        # this explicitly!
-        return np.iinfo(np.int64).max
+        return len(self.frames) - 3
 
     def __getitem__(self, index: int) -> int:
         """
